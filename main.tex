@@ -36,16 +36,21 @@ citestyle=authoryear
 \begin{frame}{Introduction}
 \small
 \begin{itemize}
-    \item $N_1(t)$ is the counting processes, the number of failures in the observation period $[0; t)$, $t < \infty$ in the cohort 
-    \item $Y_1(t)$ is the counting processes of the number at risk corresponding to $N_1(t)$, where $Y_1_{i}(t) = I(T_i \geq t)$ is at risk indicator for an individual $i$ in the cohort just before time $t$ 
-    \item Under independent censoring the intensity process for an individual $i$  $$\lambda_i(t) = \alpha_i(t) Y_1_{i}(t)$$
+    \item $N(t)$ is the counting process, the number of events in the observation period $[0; t)$, $t < \infty$ in the cohort:
+    $N(t) = \sum_1^n N_i(t)$ the aggregated process
+    \item $Y(t)$ is the counting processes of the number at risk corresponding to $N(t)$, where $Y_{i}(t) = I(T_i \geq t)$ is at risk indicator for an individual $i$ in the cohort just before time $t$ 
+    \item Under independent censoring the intensity process for an individual $i$  $$\lambda_i(t) = \alpha_i(t) Y_{i}(t)$$
      %Independent censoring is important to have equation (1.20) on page 30 
  \end{itemize}
 \end{frame}
  
  \begin{frame}{Introduction. Cont}
  \begin{itemize}
-    \item Consider a model with hazard rate:$$\alpha_i(t) = \gamma(t) + \mu_i(t),$$ where:
+    \item Consider a model with hazard rate:
+    \begin{equation}
+    \label{eq0}
+       \alpha_i(t) = \gamma(t) + \mu_i(t),
+    \end{equation} where:
  %The interpretation of the model can be given in a competing risk framework: Each individual is exposed to: a standard risk depending on age, sex, and calendar time and additional risk due to the fact that all individuals suffer from some disease    
 
 
@@ -53,22 +58,30 @@ citestyle=authoryear
      $\gamma(t)$ is the excess mortality, assumed to be common to all individuals%, i.e. all individuals are homogeneous
      
      
-     $\mu_i(t) = \mu_i(a_i + t),$ is general population mortality to a corresponding individual $i$ at $a_i$ age at diagnosis, which is assumed to be known. 
-% The population mortality denote an upper limit for the observed survival times. 
-     \item Then the intensity process:
- $\lambda(t) = \sum_i^n \lambda_i(t) = \sum_i^n (\gamma(t) + \mu_i(t)) Y_1_i(t) \\= \gamma(t)\sum_i^n Y_1_i(t) + \sum_i^n \mu_i(t) Y_1_i(t) = Y_1(t) (\gamma(t) + \frac{\sum_i^n \mu_i(t) Y_1_i(t)}{Y_1(t)} \\
-     = Y_1(t) (\gamma(t) + \bar\mu(t))$
-  \end{itemize}
+     $\mu_i(t)$ is mortality rate for a person in the general population corresponding to an individual $i$. This correspondence is usually done due to age, sex and calendar year but there might be other factors too, for example, social status.
+     \newline
+     Here we denote $\mu_i(t) = \mu_i(a_i + t)$ mortality rate in the general population corresponding to the individual $i$ who were diagnosed at $a_i$ age
+     \newline
+     Population mortality rate is assumed to be known. 
+ \end{itemize}
+ \end{frame}
+ 
+ \begin{frame}
+Then the intensity process for $N(t)$:
+\newline
+
+ $\lambda(t) = \sum_i^n \lambda_i(t) = \sum_i^n (\gamma(t) + \mu_i(t)) Y_i(t) \\= \gamma(t)\sum_i^n Y_i(t) + \sum_i^n \mu_i(t) Y_i(t) = Y(t) (\gamma(t) + \frac{\sum_i^n \mu_i(t) Y_i(t)}{Y(t)} \\
+     = Y(t) (\gamma(t) + \bar\mu(t))$
+ 
   \end{frame}
   
   \begin{frame}{Introduction. Cont}
   \begin{itemize}
-      \item $\lambda(t) = Y_1(t) (\gamma(t) + \bar\mu(t)),$ 
-     %Additive model is better because excess hazard is allowed to be negetavi and the additive model can be given interpretation in a compiting risk framework 
-     where 
+      \item $\lambda(t) = Y(t) (\gamma(t) + \bar\mu(t)),$ 
+      where 
      \begin{equation}
      \label{eq1}
-     \bar\mu(t) = \sum_i^n \mu_i(t) \frac{Y_1_i(t)}{Y_1(t)}
+     \bar\mu(t) = \sum_i^n \mu_i(a_i+t) \frac{Y_i(t)}{Y(t)}
      \end{equation}
    \newline
      is the average population mortality among the individuals at risk just before time t.
@@ -76,128 +89,54 @@ citestyle=authoryear
    \end{itemize}
 \end{frame}
 
+\begin{frame}{Introduction. Cont}
+    If we assume parametric distribution for the hazard rate with a parameter $\theta$ (which can be, of course, a vector of parameters), then the likelihood can be written in terms of product integral:
+    \begin{equation}
+        L(\theta) =  \pi (\prod_{i=1}^n (\lambda_i(t)^{\Delta N_i(t)}) x (1-\lambda(t)dt)^{1-\Delta N(t)}) \\\
+    = \pi (\prod_{i=1}^n((\gamma(\theta,t) + \mu_i(t))Y_i(t))^{\Delta N_i(t)}) x (1 - \lambda(t)dt)^{1-\Delta N(t)})
+    \end{equation}
+    \newline
+    \newline
+    \cite{andersen}, p 99, equation 2.7.2''
+    
+\end{frame}
 
-\section{The estimates of cumulative excess mortality}
+
+
+
+\section{The estimate of cumulative excess mortality and its properties}
   \begin{frame}{The cumulative excess mortality}
  \begin{itemize} 
-   \item $dN_1(t) = \lambda(t)dt + dM_1(t) = Y_1(t) (\gamma(t) + \bar\mu(t)) dt + dM_1(t)$ is an incremenent of the counting process
+   \item $dN(t) = \lambda(t)dt + dM(t) = Y(t) (\gamma(t) + \bar\mu(t)) dt + dM(t)$ is an incremenent of the counting process
    \newline
-   \item $\frac{J(t) dN_1(t)}{Y_1(t)} = J(t)(\gamma(t) + \bar\mu(t)) dt + \frac{J(t)dM_1(t)}{Y_1(t)}$
+   \item $\frac{J(t) dN(t)}{Y(t)} = J(t)(\gamma(t) + \bar\mu(t)) dt + \frac{J(t)dM(t)}{Y(t)}$
    \end{itemize}
 \end{frame} 
    
    \begin{frame}{The cumulative excess mortality. Cont}
    \begin{itemize} 
-   \item $\int_0^t \frac{J(s)}{Y_1(s)}dN_1(s) = \int_0^t J(s)\gamma(s) ds + \int_0^t J(s)\bar\mu(s)ds + \int_0^t \frac{J(s)dM_1(s)}{Y_1(s)}$
+   \item $\int_0^t \frac{J(s)}{Y(s)}dN(s) = \int_0^t J(s)\gamma(s) ds + \int_0^t J(s)\bar\mu(s)ds + \int_0^t \frac{J(s)dM(s)}{Y(s)}$
    \newline
-   \item $\hat A(t) = \Gamma^*(t) + \int_0^t J(s)\bar\mu(s)ds + \int_0^t \frac{J(s)dM_1(s)}{Y_1(s)}$ 
+   \item $\hat A(t) = \Gamma^*(t) + \int_0^t J(s)\bar\mu(s)ds + \int_0^t \frac{J(s)dM(s)}{Y(s)}$ 
    %Nelson_Aalen estimator
-   
-   
-   \item $\hat\Gamma(t) = \hat A(t) - \int_0^t J(s) \bar\mu(s) ds,$
-   
+    \item $\hat\Gamma(t) = \hat A(t) - \int_0^t J(s) \bar\mu(s) ds,$
+   \newline
    which is unbiased estimator of $\Gamma^*$.
    %because $\int_0^t \frac{dM(s)}{Y(s)}$ is a stochastic integral with respect to martingale, i.e. it is zero-mean martingale.
-   
-  % \item $\int_0^t \frac{dN(s)}{Y(s)}$ is NA estimator
-  % \item $\int_0^t \frac{dM(s)}{Y(s)}$ is a stochastic integral with respect to martingale, i.e. it is zero-mean martingale.
   \newline
   \newline
    Thus, the estimator for the cumulative excess mortality is the difference between the Nelson-Aalen estimator for the group under study and the cumulative average population mortality.
-  
-%The estimator should not be either nonnegative or nondecreasing, i.e. it can be negative and decreasing.
-
    \end{itemize}
 \end{frame}
 
-\begin{frame}{The estimate of cumulative excess mortality with unknown population mortality. Extra}
-Assume now that $\mu_i(t)$ is unknown and $N_2$ is a Poisson process which is independent of the excess mortality. 
-\newline
-Its intensity $\lambda^*_i(a_i+t)=Y_{2i}(t)\mu_i(a_i+t)$ and $\Lambda^* = \int_0^t \lambda^*_i(s)ds$.
-Assuming piece-wise constant process, we can obtain a point estimator:
-\begin{equation}
-\label{eq2}
-    \hat \mu_i(a_i+t) = \frac{N_2_{\bullet}}{Y_2_{\bullet}},
-\end{equation}
- \newline
- where $N_2_{\bullet}$ is the total number of all event in the general population for individuals of age, sex and calendar year, corresponding to the individual $i$ in the cohort and $Y_2_{\bullet}$ is the total person-time in each group.
- \newline
-We can then plug-in the estimates (\ref{eq2}) to the equation (\ref{eq1}) 
-\newline
-We also get an unbiased estimator of $\Gamma^*$
-
- \end{frame}
-
-
-
-\section{Asymptotic properties}
-\begin{frame}{Uniform consistency}
-\begin{itemize}
-\item We should show that $sup|\hat\Gamma(t) - \Gamma^*(t)| \rightarrow 0$  
-\item We use the version (\cite{andersen}) of Lenglart's 
-\item Recall, $$\hat\Gamma(t) - \Gamma^* = \int_0^t \frac{dM_1(s)}{Y_1(s)} = \int_0^t H(s) dM_1(s),$$
-where $\frac{1}{Y_1(s)}$ is a stochastic predictable process.
-\item $\int_0^t H(s) dM_1(s)$ is a zero-mean martingale, therefore $(\int_0^t H(s) dM_1(s))^2$ is a submartingale (Jensen's inequality).
-% \int_0^t H(s) dM(s) = M, (\int_0^t H(s) dM(s))^2 = M^2
-%$E(M^2(t)|F_s) \geq (E(M(t)|F_s))^2 = M^2(s)$
-\item By Doob-Meyer decomposition, there is a unique compensator (predictable process) for $M^2(t)$: $<M>(t)$
-\end{itemize}
- \end{frame}
- 
- 
-\begin{frame}{Uniform consistency.Cont}
-(I leave indexes here)
-\begin{itemize}
-\item $M^2(t) = (\int_0^t H(s) dM(s))^2$
-
-
-\item $<M>(t) = < \int_0^t H(s) dM(s) > \leq \int_0^T H^2(s) d<M>(s) \\\
-
-
-= \int_0^T \frac{1}{Y(s)^2}\lambda(s)ds = \int_0^T \frac{\alpha(s) Y(s)ds}{Y(s)^2} \leq \int_0^T \frac{\alpha(s)}{Y(T)} = \frac{A(T)}{Y(T)},$ \\\
-
-
-
-
-where $T$ is stopping time.
-
-
-When $n \rightarrow \infty,$ then $Y(T) \rightarrow \infty$ and  $<M>(t) \rightarrow 0$.
-
-% equation (2.29) 
-\newline
-\newline
-Thus, $P(\int_0^T H^2(s)d<M>(s) \geq \tau) \rightarrow 0$
-\end{itemize}
- \end{frame}
-
-
-\begin{frame}{Uniform consistency. Cont}
-If we apply now Lenglart’s inequality, we get: \\\
-
-
-$P(sup(\int_0^t H(s)dM(s)ds)^2  \geq \epsilon) \leq \frac{\tau}{\epsilon} + P(\int_0^T H^2(s)d<M>(s) \geq \tau) = P(sup(\int_0^t H(s)dM(s)ds)^2  \geq \epsilon) - P(\int_0^T H^2(s)d<M>(s) \geq \tau) \leq \frac{\tau}{\epsilon},$ \\\
-
-where $M^2 - < M>$ is a zero mean martingale, hense $P(sup(\int_0^t H(s)dM(s)ds)^2  \geq \epsilon) - P(\int_0^T H^2(s)d<M>(s) \geq \tau) \rightarrow 0$ and $P(\int_0^T H^2(s)d<M>(s) \rightarrow 0 $ 
-
-%If we take $\tau$ and $\epsilon$ small, 
-Thus, $sup|\hat\Gamma(t) - \Gamma^*(t)| \rightarrow 0,$ when $n \rightarrow \infty$, i.e. we have uniform consistency
-
-\end{frame}
-
-
-
 \begin{frame}{Variation process}
 \begin{itemize}
-  \item We use the optional variation process as an estimator of the variance of the NA estimator $$[\int HdM](t) = \int_0^t H^2(s) dN(s) $$
+  \item We use the optional variation process as an estimator of the variance of the cumulative excess hazard $$[\int HdM](t) = \int_0^t H^2(s) dN(s) $$
  \begin{equation}
  \label{eq3}
       [\hat\Gamma - \Gamma^*](t) = \int_0^t \frac{J(s)}{Y_1(s)^2} dN_1(s),
  \end{equation}
-
- 
- which is the estimator for the variance of the Nelson-Aalen estimator.
- \neline 
+ \newline 
  This is unbiased estimator, because
  $$Var(\hat\Gamma(t) - \Gamma^*(t)) = Var(\hat\Gamma(t)) = E[\hat\Gamma - \Gamma^*](t) = E(\int_0^t \frac{J(s)}{Y_1(s)^2} dN_1(s)) $$
  \newline
@@ -208,31 +147,75 @@ Thus, $sup|\hat\Gamma(t) - \Gamma^*(t)| \rightarrow 0,$ when $n \rightarrow \inf
 \end{itemize}
 \end{frame}
 
-\begin{frame}{Variation process. Extra}
-If we assume again that the population mortality rates are unknown. Then:
+\section{Asymptotic properties}
+\subsection{Uniform consistency}
+\begin{frame}{Uniform consistency}
+\begin{itemize}
+\item Consider a sequence of counting processes $N^{(n)} = (N_1^{(n)},N_2^{(n)}, ..., N_k^{(n)})$
+\item We should show that $sup|\hat\Gamma^{(n)}(t) - \Gamma^*(t)| \rightarrow 0$  
+\item We use the Lenglart's inequality that for any $\epsilon$,$\tau > 0$:
+$$P(sup(\int_0^t H(s)dM(s)ds)^2  \geq \epsilon) \leq \frac{\tau}{\epsilon} + P(\int_0^T H^2(s)d<M>(s) \geq \tau) $$
+\newline
+where $T$ is a stopping time.
+\end{itemize}
+ \end{frame}
+
+
+\begin{frame}{Uniform consistency.Cont}
+\begin{itemize}
+\item Recall, $$\hat\Gamma(t) - \Gamma^*(t) = \int_0^t \frac{dM(s)}{Y(s)} = \int_0^t H(s) dM(s)$$
+\item $\int_0^t H(s) dM(s)$ is a zero-mean martingale
+\item Using that $E|M| =\sqrt{E(M^2)}$, hence $E(M^2) = (E|M|)^2$  
+\item $sup|\hat\Gamma^{(n)}(t) - \Gamma^*(t)| = sup(M^2) = sup (\int_0^t H(s) dM(s))^2$
+%therefore $(\int_0^t H(s) dM_1(s))^2$ is a submartingale (Jensen's inequality).
+% \int_0^t H(s) dM(s) = M, (\int_0^t H(s) dM(s))^2 = M^2
+%$E(M^2(t)|F_s) \geq (E(M(t)|F_s))^2 = M^2(s)$
+%\item By Doob-Meyer decomposition, there is a unique compensator (predictable process) for $M^2(t)$: $<M>(t)$
+\end{itemize}
+ \end{frame}
+
+
+\begin{frame}{Uniform consistency. Cont}
+If we look at the right side of the Lenglart's inequality: 
+\begin{itemize}
+  \item $<M>(t) = < \int_0^t H(s) dM(s) > \leq \int_0^T H^2(s) d<M>(s) \\\
+= \int_0^T \frac{1}{Y(s)^2}\lambda(s)ds = \int_0^T \frac{\alpha(s) Y(s)ds}{Y(s)^2} \leq \int_0^T \frac{\alpha(s)}{Y(T)} = \frac{A(T)}{Y(T)},$ \\\
+\newline
+where $T$ is stopping time.
+\newline
+When $n \rightarrow \infty,$ then $Y(T) \rightarrow \infty$ and  $<M>(t) \rightarrow 0$.
+% equation (2.29) 
 \newline
 \newline
-$Var(\hat \Gamma(t)) = Var( \hat A(t)) + Var(\int_0^t J(s) \bar\mu(s) ds)) \\\
+Thus, $P(\int_0^T H^2(s)d<M>(s) \geq \tau) \rightarrow 0$
 
-= \int_0^t \frac{J(s)}{Y(s)^2} dN(s) + Var(\int_0^t \sum_{i=1}^n \frac{N_2_{\bullet}}{Y_2_{\bullet}}\frac{J(s)Y_1_i(s)}{Y_1(s)}) \\\
-= \int_0^t \frac{J(s)}{Y(s)^2} dN(s) + \int_0^t \sum_{i=1}^n \frac{J(s)Y_1_i(s)}{Y_1^2(s)}\frac{N_2_{\bullet}}{Y_2_{\bullet}} $
+
+\end{itemize}
 \end{frame}
 
-\begin{frame}{Variation process. Extra}
-If we assume that both $\mu$ and $\gamma$ are constant. 
-\begin{align*}
-\hat\gamma &= \frac{N_{1\bullet}}{Y_{1\bullet}} - \frac{N_{2\bullet\bullet}}{Y_{2\bullet\bullet}} \\
-  \hat\mu &= \frac{N_{2\bullet\bullet}}{Y_{2\bullet\bullet}} \\
-  Var(\hat \gamma) = \frac{N_{1\bullet}}{Y_{1\bullet}^2} + \frac{N_{2\bullet\bullet}}{Y_{2\bullet\bullet}^2}
-\end{align*}
-I.e. the variance of excess hazard in this case is the variance of the observed process and the variance of the process in the general population.
+\begin{frame}{Uniform consistency.Cont}
+Finally, using that $M^2 - < M>$ is a zero mean martingale,
+\newline
+\newline
+$P(sup(\int_0^t H(s)dM(s)ds)^2  \geq \epsilon) \leq \frac{\tau}{\epsilon} + P(\int_0^T H^2(s)d<M>(s) \geq \tau) \\\ 
+= P(sup(\int_0^t H(s)dM(s)ds)^2  \geq \epsilon) - P(\int_0^T H^2(s)d<M>(s) \geq \tau) \leq \frac{\tau}{\epsilon},$ \\\
+
+where,
+\newline
+$P(sup(\int_0^t H(s)dM(s)ds)^2  \geq \epsilon) - P(\int_0^T H^2(s)d<M>(s) \geq \tau) \rightarrow 0$ 
+and 
+\newline
+$P(\int_0^T H^2(s)d<M>(s) \rightarrow 0 $ 
+
+If we take $\tau$ and $\epsilon$ small,
+$$sup|\hat\Gamma(t) - \Gamma^*(t)| \rightarrow 0,$$ when $n \rightarrow \infty$, i.e. we have uniform consistency  
 \end{frame}
 
 
-
-
+\subsection{Asymptotic distribution}
 \begin{frame}{Asymptotic distribution}
 $\hat\Gamma(t) - \Gamma^*(t) = \int_0^t \frac{J(s) dM(s)}{Y(s)}$ is a mean-zero martingale
+\newline
 \newline
 To apply Martingale central limit theorem, check conditions:
 \begin{itemize}
@@ -242,15 +225,17 @@ To apply Martingale central limit theorem, check conditions:
 \end{frame}
    
 \begin{frame}{Asymptotic distribution. Cont}
+Can we scale $\hat\Gamma(t) - \Gamma^*(t)$ in a way to apply Martingale central limit theorem? If we consider:
 $\sqrt{n}(\hat\Gamma(t) - \Gamma^*(t))$ is a Wiener process  
 \newline
 Analogically to Nelson-Aalen estimator in lectures, we get:
 \newline
 \begin{itemize}
-    \item $H(s)^2 \lambda(s) =\sqrt{n}^2 \frac{J(s)Y(s)\alpha(s)}{Y^2(s)} = \frac{J(s)\alpha(s)}{Y(s)/n}$
-    
-    
-    Assume that $\frac{\alpha(s)}{Y(s)/n} \rightarrow \frac{\alpha(s)}{y(s)} ,$ when $n \rightarrow \infty$, i.e. $v(s) = \frac{\alpha(s)}{y(s)}$ and $y(s) > 0$
+    \item $H(s)^2 \lambda(s) =(\sqrt{n})^2 \frac{J(s)Y(s)\alpha(s)}{Y^2(s)} = n\frac{J(s)Y(s)(\gamma(s) + \bar\mu(s)}{Y^2(s)} \\\
+    = \frac{J(s)(\gamma(s)+\bar\mu(s))}{Y(s)/n}$
+    \newline
+    \newline
+    Assume that $\frac{\gamma(s) + \bar\mu(s)}{Y(s)/n} \rightarrow \frac{\gamma(s) + \bar\mu(s)}{y(s)} ,$ when $n \rightarrow \infty$, i.e. $v(s) = \frac{\gamma(s) + \bar\mu(s)}{y(s)}$ and $y(s) > 0$
     
     
     \item $\sqrt{n}\frac{J(s)}{Y(s)} = \frac{J(s)}{\sqrt{n}} \frac{1}{Y(t) / n} \rightarrow 0,$ when $n \rightarrow \infty$
@@ -259,7 +244,7 @@ Analogically to Nelson-Aalen estimator in lectures, we get:
 \end{frame}
 
 \begin{frame}{Asymptotic distribution. Cont}
-Thus, according to martingale central limit theorem, $\sqrt{n}(\hat\Gamma(t) - \Gamma^*(t))$ converges to Gaussian zero-mean distribution with variance function $V(t) = \int_0^t v(s) ds = \int_0^t \frac{\alpha(s)}{Y(s)}ds$ and estimated by (\ref{eq3}).
+Thus, according to martingale central limit theorem, $\sqrt{n}(\hat\Gamma(t) - \Gamma^*(t))$ converges to Gaussian zero-mean distribution with variance function $V(t) = \int_0^t v(s) ds = \int_0^t \frac{\gamma(s) + \bar\mu(s)}{Y(s)}ds$ and estimated by (\ref{eq3}).
 %which is unbiased estimator
 \newline
 \newline
@@ -268,26 +253,25 @@ Analogically to the lectures, asymptotically there is no difference between $\Ga
 \newline   
 \newline
 I.e. there is only a small probability that there is no one at risk at times $s \leq t$.
-Thus, asymptotically there is no difference between $\Gamma(t)$ and $\Gamma^*(t)$
 \end{frame}
 
+\subsection{Some interesting findings}
 \begin{frame}{Some interesting findings}
 \begin{itemize}
-    \item The bias of $\hat\Gamma(t)$ is less than 0.25\% as long as $Y(t) \geq 3$
-    \item The variance estimator (\ref{eq3}) overestimates the true variance but the bias does not exceed 5\%  as long as $Y(t) \geq 3$ 
+\item $E(Y(t))$ is the expected number still at risk just before time $t$. 
+    \item The bias of $\hat A(t)$ is less than 0.25\% as long as $E(Y(t)) \geq 3$
+    \item The variance estimator (\ref{eq3}) overestimates the true variance but the bias does not exceed 5\%  as long as $E(Y(t)) \geq 3$ 
     \item \cite{andersen}, p.182
 \end{itemize} 
    
 \end{frame}
 
-
-
-
-\section{Relative survival}
+\section{The estimate of the relative survival}
 \begin{frame}{Corresponding survival function}
 \begin{itemize}
 \item Recall that
 %the relationship between between S and cumulative hazard can be expressed in terms of product integral (Appendix A.1)
+%Product integral is not any continuous integration, it is when $n \rightarrow \infty$, the width of the interval goes to 0
 $S(t) = \Pi_{u \leq t}(1-dA(u))$.
 \newline
 For a continuous function $dA(u) = \alpha(u)du$ and using approximation $exp(\alpha(u)du) \approx 1+ (-\alpha(u)du)$ we obtain that 
@@ -308,39 +292,124 @@ $\hat RS = exp(-\hat A(t) - (-A_p(t))) = \frac{exp(-\hat A(t))}{exp(-A_p(t))} = 
 Recall that the mortality rate in the general population is assumed to be known, the statistical properties of $RS$ estimator can be studied in the same way as for $KM$ estimator, i.e.
 \begin{itemize}
     \item $RS$ is almost unbiased when there is only a small probability that there is no one at risk at times $u \leq t$
-    \item $Var(\hat RS) = Var(\hat S(t)) = \hat S(t)^2 Var(\hat A(t)) $
+    \item $Var(\hat RS) = \frac{Var(\hat S(t))}{S_e(t)^2}  = \frac{\hat S(t)^2 Var(\hat A(t))}{S_e(t)^2} = \hat RS(t)^2  Var(\hat A(t))$
 \end{itemize}
 
 \end{frame}
 
-\section{Additive excess hazards models}
+\section{Additive non parametric excess hazards models}
 \begin{frame}{Additive excess hazards model}
-The nonparametric additive excess hazards model:
-$$\lambda(t) = Y_1(t)(\mu(t;Z) + X^T \beta(t)),$$
-where $\beta(t) = (\beta_0(t), \beta_1(t) ... \beta_p(t))^T$ and $Z$ is a vector of covariates in the general (background) population. \\
-Estimators in the additive excess hazards model are very similar to the ones used for the standard additive hazards models.
+Using (\ref{eq0}) individual hazard rate can be written:
+$$\alpha_i(t|x_i) = \beta_0(t) + \beta_1(t)x_{i_1} + ... + \beta_p(t)x_{i_p} + \mu_i(a_i + t) = X(t)\beta(t) + \mu_i(a_i + t) $$
+$\beta_0(t)$ is the baseline hazard rate, 
+%corresponding to the hazard rate of an individual with all covariates equal to 0.
+$\beta_j(t)$ is the increase in the hazard at time $t$
+%corresponding to unit's increase
+and $\beta_j(t)$ are arbitrary regression functions.
+We want to estimate a cumulative regression function for each $\beta_j(t)$, $$B_j(t) = \int_0^t \beta_j(s)ds,$$ where $j=0,...,p$
+\end{frame}
+
+\begin{frame}
+We define a modified counting process:
+$\widetilde{N(t)} = N(t) - \Lambda^*,$ where
+$\Lambda^* = \int_0^t \lambda_i^*(s)ds$ and $\lambda_i^*$ is intensity in the general population.
+$$\lambda(t) = \textbf{Y(t)} \alpha(t),$$
+where $\textbf{Y(t)}$ is $n x (p+1)$ matrix with row $i$ equal to $Y_i(t) = I(T \geq t)(1,x_{i1},...,x_{ip})$ 
 \newline
-Recall, $\lambda_i^*$ is intensity in the general population, hence $\Lambda^* = \int_0^t \lambda_i^*(s)ds$ and $ $\widetilde{N(t)} = N(t) - \Lambda^*$ is a modified counting process
+$$d\widetilde{N(t)} = dN(t) - \lambda^*(t)dt = \lambda(t)dt + dM(t)- \lambda^*(t)dt \\\
+= (\lambda^*(t) + Y(t)\beta(t))dt - \lambda(t)^*dt + dM(t) = Y(t)\beta(t)dt + dM(t)$$
 \newline
-Then
-$$d\widetilde{N(t)} = dN(t) - \lambda^*dt = X\beta(t)dt + dM(t),$$
-where 
 \newline
-$dN(t) = \lambda(t)dt + dM(t) = (X\beta(t) + \lambda^*)dt + dM(t)$
+%$[\Lambda^*(s) = \int_0^t \lambda^*(s) ds, d\Lambda^*(t) = \lambda^*(t)dt]$
 \end{frame}
 
 \begin{frame}{Additive excess hazards model. Cont}
-   $$\hat{dB(t)} = (X(t)^TX(t))^{-1}X^T d\widetilde{N(t)} $$
- \newline
- Therefore, $$\hat B^*(t) = \int_0^t (X(t)^TX(t))^{-1}X^T d\widetilde{N(t)} $$
- 
- And it can be rewritten:
- 
- $$\hat B^*(t) = \hat B(t) - \int_0^t (X(t)^TX(t))^{-1}X^T\lambda^*(s)ds,$$
- is the difference of Aalen estimator $\hat B(t) = \int_0^t(X(t)^TX(t))^{-1}X^TdN(s)$ and a predictable term depending on the background mortality rate and the observed covariates. 
-   
-    
+$$d\widetilde{N(t)} = Y(t)\beta(t)dt + dM(t)$$
+We obtain:
+\begin{equation}
+\label{eq5}
+    \hat B^*(t) = \int_0^t Y(t)^{-}d\widetilde{N(t)}
+\end{equation}
+where $Y^{-}$ is a predictable generalized inverse, which using least squares principle applied to the linear equations equals:
+$$Y^{-}(t) = (Y(t)^TY(t))^{-1}Y(t)^T $$
 \end{frame}
+
+\begin{frame}
+Equation (\ref{eq5}) can be rewritten:
+$$\hat B^*(t) = \int_0^t Y^-(s)dN(s) - \int_0^t Y(t)^{-}\lambda^*(s)ds
+= \hat B(t) - \int_0^t Y(t)^{-}\lambda^*(s)ds,$$
+ is the difference of Aalen estimator and a predictable term depending on the background mortality rate and the observed covariates in the data. 
+   \end{frame}
+
+
+\section{Unknown population mortality}
+\begin{frame}{The estimate of cumulative excess mortality with unknown population mortality. Extra}
+Assume now that $\mu_i(t^*)$ is unknown. Here $t^*$ is the time from the birth of an individual in the general population
+\newline
+If we define $N_{2_i}$ is a counting process of an individual in a small interval $[t^*; t^*+\Delta t^*)$, then $N_{2_j_\bullet}$ is an aggregated counting process, the number of deaths among individuals at age $a_j$ in the general population.
+\newline
+%These processes are independent of the excess mortality in the given cohort. 
+\newline
+Its intensity can be written:
+$$\lambda^*_j(t^*)=Y_{2_j_\bullet}(t^*)\mu_j(t^*)$$
+
+i.e. we assume that within age group population mortality rates are the same
+\end{frame}
+
+
+\begin{frame}{The estimate of cumulative excess mortality with unknown population mortality. Extra}
+We can obtain a point estimator for mortality rates within one age group:
+\begin{equation}
+\label{eq2}
+    \hat \mu_j(t^*) = \frac{N_2_j_{\bullet}}{Y_2_j_{\bullet}},
+\end{equation}
+ \newline
+ %where $N_2_{\bullet}$ is the total number of all event in the general population for individuals of age, sex and calendar year, corresponding to the individual $i$ in the cohort and $Y_2_{\bullet}$ is the total person-time in each group.
+ \newline
+We can then plug-in the estimates (\ref{eq2}) to the equation (\ref{eq1}) 
+\newline
+We also get an unbiased estimator of $\Gamma^*$
+\end{frame}
+
+\begin{frame}{Variation process. Extra}
+If we assume again that the population mortality rates are unknown. Then: $M = M_1 + M_2$ and 
+$$[\hat\Gamma(t) - \Gamma^*(t)] = [M_1 + M_2]$$
+Then:
+$$<M_1 + M_2> = <M_1> + <M_2> + 2<M_1,M_2>, $$
+where $M_1$ and $M_2$ are martingales of the corresponding counting processes: $N_1$, the number of events due to "cancer" and $N_2$, the number of events due to other reasons.  
+\newline
+Note, that $N_1$ and $N_2$ do not jump simultaneously (assumption which is proved to be reasonable). But then $<M_1,M_2>$ = 0. 
+\end{frame}
+
+\begin{frame}
+    $Var(\hat \Gamma(t)) = Var( \hat A(t)) + Var(\int_0^t J(s) \bar\mu(s) ds)) + 2Cov(\hat A(t),\int_0^t J(s) \bar\mu(s) ds)) \\\
+
+= \int_0^t \frac{J(s)}{Y(s)^2} dN(s) + Var(\int_0^t \sum_{i=1}^n \frac{N_2_i_{\bullet}}{Y_2_i{\bullet}}\frac{J(s)Y_1_i(s)}{Y_1(s)}) + 2 Cov(...) \\\
+= \int_0^t \frac{J(s)}{Y(s)^2} dN(s) + \int_0^t \sum_{i=1}^n \frac{J(s)Y_1_i(s)}{Y_1^2(s)}\frac{N_2_i{\bullet}}{Y_2_i{\bullet}} + 2Cov(...) $
+\end{frame}
+\begin{frame}{Example}
+\begin{figure}[hp!]
+\centering
+\includegraphics[width=10cm,height = 7cm]{cum_haz.png}
+  \label{fig1}
+\end{figure}  
+% All three curves look roughly linear within about 16 years, indicating that a model with constant excess hazard seems reasonable
+\end{frame}
+
+
+
+
+\begin{frame}{Variation process. Extra}
+If we assume that both $\mu$ and $\gamma$ are constant. 
+\begin{align*}
+\hat\gamma &= \frac{N_{1\bullet}}{Y_{1\bullet}} - \frac{N_{2\bullet\bullet}}{Y_{2\bullet\bullet}} \\
+  \hat\mu &= \frac{N_{2\bullet\bullet}}{Y_{2\bullet\bullet}} \\
+  Var(\hat \gamma) = \frac{N_{1\bullet}}{Y_{1\bullet}^2} + \frac{N_{2\bullet\bullet}}{Y_{2\bullet\bullet}^2}
+\end{align*}
+I.e. the variance of excess hazard in this case is the variance of the observed process and the variance of the process in the general population.
+\end{frame}
+
+
 
 \begin{frame}{Bibliography}
 \printbibliography %Prints bibliography
