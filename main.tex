@@ -31,7 +31,7 @@ citestyle=authoryear
 \end{frame}
 
 
-\section{Introduction.}
+\section{Introduction}
 
 \begin{frame}{Introduction}
 \small
@@ -66,11 +66,28 @@ citestyle=authoryear
  \end{itemize}
  \end{frame}
  
+ \begin{comment}
+ \begin{frame}{Example}
+\begin{figure}[hp!]
+\centering
+\includegraphics[width=10cm,height = 7cm]{cum_haz.png}
+  \label{fig1}
+\end{figure}  
+% All three curves look roughly linear within about 16 years, indicating that a model with constant excess hazard seems reasonable
+\end{frame}
+\end{comment}
+
+
+
  \begin{frame}
 Then the intensity process for $N(t)$:
 \newline
 
- $\lambda(t) = \sum_i^n \lambda_i(t) = \sum_i^n (\gamma(t) + \mu_i(t)) Y_i(t) \\= \gamma(t)\sum_i^n Y_i(t) + \sum_i^n \mu_i(t) Y_i(t) = Y(t) (\gamma(t) + \frac{\sum_i^n \mu_i(t) Y_i(t)}{Y(t)} \\
+ $\lambda(t) = \sum_i^n \lambda_i(t) = \sum_i^n (\gamma(t) + \mu_i(t)) Y_i(t) \\
+ 
+ = \gamma(t)\sum_i^n Y_i(t) + \sum_i^n \mu_i(t) Y_i(t) = Y(t) (\gamma(t) + \frac{\sum_i^n \mu_i(t) Y_i(t)}{Y(t)} \\
+    
+    
      = Y(t) (\gamma(t) + \bar\mu(t))$
  
   \end{frame}
@@ -89,6 +106,7 @@ Then the intensity process for $N(t)$:
    \end{itemize}
 \end{frame}
 
+\begin{comment}
 \begin{frame}{Introduction. Cont}
     If we assume parametric distribution for the hazard rate with a parameter $\theta$ (which can be, of course, a vector of parameters), then the likelihood can be written in terms of product integral:
     \begin{equation}
@@ -100,7 +118,7 @@ Then the intensity process for $N(t)$:
     \cite{andersen}, p 99, equation 2.7.2''
     
 \end{frame}
-
+\end{comment}
 
 
 
@@ -342,7 +360,7 @@ $$\hat B^*(t) = \int_0^t Y^-(s)dN(s) - \int_0^t Y(t)^{-}\lambda^*(s)ds
    \end{frame}
 
 
-\section{Unknown population mortality}
+%\section{Unknown population mortality}
 \begin{frame}{The estimate of cumulative excess mortality with unknown population mortality. Extra}
 Assume now that $\mu_i(t^*)$ is unknown. Here $t^*$ is the time from the birth of an individual in the general population
 \newline
@@ -386,14 +404,6 @@ Note, that $N_1$ and $N_2$ do not jump simultaneously (assumption which is prove
 
 = \int_0^t \frac{J(s)}{Y(s)^2} dN(s) + Var(\int_0^t \sum_{i=1}^n \frac{N_2_i_{\bullet}}{Y_2_i{\bullet}}\frac{J(s)Y_1_i(s)}{Y_1(s)}) + 2 Cov(...) \\\
 = \int_0^t \frac{J(s)}{Y(s)^2} dN(s) + \int_0^t \sum_{i=1}^n \frac{J(s)Y_1_i(s)}{Y_1^2(s)}\frac{N_2_i{\bullet}}{Y_2_i{\bullet}} + 2Cov(...) $
-\end{frame}
-\begin{frame}{Example}
-\begin{figure}[hp!]
-\centering
-\includegraphics[width=10cm,height = 7cm]{cum_haz.png}
-  \label{fig1}
-\end{figure}  
-% All three curves look roughly linear within about 16 years, indicating that a model with constant excess hazard seems reasonable
 \end{frame}
 
 
